@@ -1,0 +1,1 @@
+from .profile_handler import register_handlers_profile

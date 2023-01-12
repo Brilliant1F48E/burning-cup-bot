@@ -1,0 +1,1 @@
+from .moderator_handler import register_handlers_moderator

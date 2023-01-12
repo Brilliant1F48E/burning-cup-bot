@@ -1,0 +1,10 @@
+[tg_bot]
+token=
+admin_id=
+use_redis=
+
+[db]
+host=
+user=
+password=
+db_name=
