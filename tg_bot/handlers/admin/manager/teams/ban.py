@@ -1,7 +1,6 @@
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 
-from tg_bot import DBInteraction
 from tg_bot.misc.scripts import parse_callback, notify_user
 
 from tg_bot.types.team import TeamStatus
@@ -10,13 +9,13 @@ from tg_bot.types.team_player import TeamPlayerStatus
 from tg_bot.types.member import MemberStatus
 
 
-async def banned_team(call: types.CallbackQuery, state=FSMContext):
+async def ban_team(call: types.CallbackQuery, state=FSMContext):
     await call.answer(" ")
     await state.finish()
 
     props = await parse_callback("banned_team", call.data)
     team_id = props.get("team_id")
-    db_model: DBInteraction = call.bot.get("db_model")
+    db_model = call.bot.get("db_model")
 
     team = await db_model.get_team(team_id=team_id)
 
@@ -40,5 +39,5 @@ async def banned_team(call: types.CallbackQuery, state=FSMContext):
     await db_model.set_team_status(team_id=team_id, status=TeamStatus.BANNED)
 
 
-def register_handlers_menu_teams(dp: Dispatcher):
-    dp.register_callback_query_handler(banned_team, text_contains=["banned_team"], state="*", is_admin=True)
+def register_handlers_ban(dp: Dispatcher):
+    dp.register_callback_query_handler(ban_team, text_contains=["banned_team"], state="*", is_admin=True)

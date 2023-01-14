@@ -1,7 +1,7 @@
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 
-from tg_bot import DBInteraction
+
 from tg_bot.misc.scripts import parse_callback
 from tg_bot.models.db_model.models import Team
 
@@ -16,7 +16,7 @@ async def view_team(call: types.CallbackQuery, state=FSMContext):
 
     admin_kb = call.bot.get("kb").get("admin")
 
-    db_model: DBInteraction = call.bot.get("db_model")
+    db_model = call.bot.get("db_model")
 
     team: Team = await db_model.get_team(team_id=team_id)
 
@@ -45,5 +45,5 @@ async def view_team(call: types.CallbackQuery, state=FSMContext):
     )
 
 
-def register_handlers_menu_teams(dp: Dispatcher):
+def register_handlers_view(dp: Dispatcher):
     dp.register_callback_query_handler(view_team, text_contains=["view_team"], state="*", is_admin=True)
