@@ -7,7 +7,7 @@ async def search_all(call: types.CallbackQuery, state: FSMContext):
     await state.finish()
 
     bot = call.bot
-    admin_kb = bot.get("kb").get("admin")
+    admin_kb = bot.get("kb").get("request")
     db_model = bot.get("db_model")
 
     team_requests = await db_model.get_team_requests()
@@ -24,7 +24,7 @@ async def search_by_status(call: types.CallbackQuery, state: FSMContext):
     await state.finish()
 
     bot = call.bot
-    admin_kb = bot.get("kb").get("admin")
+    admin_kb = bot.get("kb").get("request")
     db_model = bot.get("db_model")
 
     search_by_status

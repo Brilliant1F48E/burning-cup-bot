@@ -1,4 +1,7 @@
-class RequestStatus:
+from enum import Enum
+
+
+class RequestStatus(Enum):
     SUCCESS: str = 'SUCCESS'
     FAIL: str = 'FAIL'
     CANCEL: str = 'CANCEL'

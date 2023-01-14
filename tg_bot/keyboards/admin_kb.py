@@ -291,6 +291,9 @@ class AdminKb:
         view_team_ikb.add(InlineKeyboardButton(
             "Забанить", callback_data=f"banned_team?team_id={team_id}"
         ))
+        view_team_ikb.add(InlineKeyboardButton(
+            "Разбанить", callback_data=f"unbanned_team?team_id={team_id}"
+        ))
         return view_team_ikb
 
     async def get_set_tournament_ikb(self) -> InlineKeyboardMarkup:

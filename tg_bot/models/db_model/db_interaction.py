@@ -704,7 +704,7 @@ class DBInteraction(DBClient):
         self.session.commit()
 
     async def get_teams(self):
-        teams = self.session.query(Team).filter(Team.team_status == TeamStatus.ACTIVE).all()
+        teams = self.session.query(Team).all()
 
         return teams
 

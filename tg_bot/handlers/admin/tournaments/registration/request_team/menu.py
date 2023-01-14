@@ -2,7 +2,7 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 
 
-async def menu_team_requests(call: types.CallbackQuery, state: FSMContext):
+async def menu(call: types.CallbackQuery, state: FSMContext):
     await call.answer(" ")
     await state.finish()
 
@@ -17,4 +17,5 @@ async def menu_team_requests(call: types.CallbackQuery, state: FSMContext):
 
 
 def register_handlers_menu(dp: Dispatcher):
-    pass
+    dp.register_callback_query_handler(menu, text=["request_team"], state="*", is_admin=True)
+
