@@ -273,7 +273,7 @@ class DBInteraction(DBClient):
         return team_player
 
     async def get_team_players_by_team_id(self, team_id: int):
-        team_players = self.session.query(TeamPlayer).filter(and_(TeamPlayer.team_player_status == TeamPlayerStatus.ACTIVE, TeamPlayer.team_id == team_id)).all()
+        team_players = self.session.query(TeamPlayer).filter(TeamPlayer.team_id == team_id).all()
 
         return team_players
 
