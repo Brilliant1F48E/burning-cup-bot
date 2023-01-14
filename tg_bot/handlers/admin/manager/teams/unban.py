@@ -38,6 +38,8 @@ async def unban_team(call: types.CallbackQuery, state: FSMContext):
                           bot=call.bot)
 
     await db_model.set_team_status(team_id=team_id, status=TeamStatus.ACTIVE)
+    answer_text: str = "Команда была успешно разблокирована"
+    await call.message.answer(answer_text)
 
 
 def register_handlers_unban(dp: Dispatcher):
