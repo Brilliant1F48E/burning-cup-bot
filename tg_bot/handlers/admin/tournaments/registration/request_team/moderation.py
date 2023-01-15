@@ -4,7 +4,8 @@ from aiogram.dispatcher import FSMContext
 
 from tg_bot import DBInteraction
 from tg_bot.misc.matches import add_matches, grouping
-from tg_bot.misc.scripts import notify_user, parse_callback
+from tg_bot.misc.scripts import notify_user, parse_callback, download_photo
+from tg_bot.models.db_model.models import TeamPlayer, RequestTeam, Team
 from tg_bot.types.moderator import VerifRequestTeam
 from tg_bot.types.registration import RegistrationStatus
 from tg_bot.types.request import RequestStatus
@@ -21,8 +22,7 @@ async def moderation(call: types.CallbackQuery, state: FSMContext):
     request_id: str = props.get("id")
     request_status: str = props.get("status")
 
-    db_model: DBInteraction = bot.get("db_model")
-    request_team_id = props.get("request_team_id")
+    db_model = bot.get("db_model")
 
     tournament = await db_model.get_tournament()
     registration = await db_model.get_registration(tournament_id=tournament.id)
@@ -31,28 +31,19 @@ async def moderation(call: types.CallbackQuery, state: FSMContext):
         await call.message.answer('Регистрация закрыта!')
         return
 
-    if value == "SUCCESS":
+    if request_status == RequestStatus.SUCCESS:
         if registration.registration_status == RegistrationStatus.OPEN:
-            request_team = await db_model.get_request_team(request_team_id=request_team_id)
-            await db_model.set_request_team_status(request_team_id=request_team_id, request_status=RequestStatus.SUCCESS)
+            request_team: RequestTeam = await db_model.get_request_team(request_team_id=request_id)
+            await db_model.set_request_team_status(request_team_id=request_id, request_status=RequestStatus.SUCCESS)
 
-            captain = await db_model.get_captain_by_team_id(team_id=request_team.team_id)
+            captain: TeamPlayer = await db_model.get_captain_by_team_id(team_id=request_team.team_id)
 
-            team_players = await db_model.get_team_players_without_captain(team_id=request_team.team_id,
-                                                                           captain_id=captain.id)
+            team_players: list = await db_model.get_team_players_without_captain(team_id=request_team.team_id,
+                                                                                 captain_id=captain.id)
 
-            team = await db_model.get_team(team_id=request_team.team_id)
+            team: Team = await db_model.get_team(team_id=request_team.team_id)
 
-            photo_name = team.name + ".png"
-            photo_telegram_id = team.photo_telegram_id
-            file = await call.bot.get_file(photo_telegram_id)
-            file_path = file.file_path
-
-            directory = call.bot.get("config").path.images
-
-            path = os.path.join(directory, photo_name)
-
-            await call.bot.download_file(file_path=file_path, destination_dir=path)
+            photo_name: str = await download_photo(bot=bot, file_id=team.photo_telegram_id, name=team.name)
 
             await db_model.set_team_photo(team_id=team.id, photo=photo_name)
 
@@ -81,7 +72,7 @@ async def moderation(call: types.CallbackQuery, state: FSMContext):
                 await db_model.set_registration_closing_date(registration_id=registration.id, closing_date=closing_date)
                 users = await db_model.get_users()
 
-                await db_model.set_request_team_status(request_team_id=request_team_id, status=RequestStatus.SUCCESS)
+                await db_model.set_request_team_status(request_team_id=request_id, status=RequestStatus.SUCCESS)
 
                 await grouping(db_model=db_model)
                 await add_matches(db_model=db_model)
@@ -93,7 +84,7 @@ async def moderation(call: types.CallbackQuery, state: FSMContext):
                         chat_id=user.id,
                         bot=call.bot
                     )
-    elif value == "FAIL":
+    elif request_status == RequestStatus.FAIL:
         await call.message.answer('Введите причину отказа')
         await state.set_state(VerifRequestTeam.ENTER_COMMENT_REQUEST_TEAM)
         async with state.proxy() as data:

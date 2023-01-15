@@ -2,7 +2,7 @@ import asyncio
 import os
 
 from aiogram import types, Bot
-from aiogram.types import PhotoSize, File
+from aiogram.types import File
 
 from tg_bot.misc.phares import Phrases
 from tg_bot.types.team_player import TeamPlayerStatus
@@ -42,16 +42,16 @@ async def check_rule_team_player(call: types.CallbackQuery):
     return True
 
 
-async def download_photo(msg: types.Message, team_name: str):
-    photo_size: PhotoSize = msg.photo[-1]
-    bot: Bot = msg.bot
-    photo_file: File = await bot.get_file(photo_size.file_id)
+async def download_photo(bot: Bot, file_id: str, name: str) -> str:
+    photo_file: File = await bot.get_file(file_id)
     file_ext: str = photo_file.file_path.split(".")[-1]
-    photo_name: str = team_name + "." + file_ext
+    photo_name: str = name + "." + file_ext
     images_path = bot.get("config").get("path").get("images")
     path: str = os.path.join(images_path, photo_name)
 
     await bot.download_file(file_path=photo_file.file_path, destination=path)
+
+    return photo_name
 
 
 async def parse_callback(method: str, callback_data) -> dict:
