@@ -70,7 +70,7 @@ async def menu_team(call: types.CallbackQuery, state=FSMContext):
     await call.message.answer(answer_text, reply_markup=team_ikb)
 
 
-# PLAYER FUNCTIONS
+# TEAM PLAYER FUNCTIONS
 async def leave_the_team(call: types.CallbackQuery, state=FSMContext):
     await state.finish()
     await call.answer(' ')

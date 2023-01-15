@@ -1,6 +1,7 @@
-from aiogram import Dispatcher, types
+from aiogram import Dispatcher, types, Bot
 from aiogram.dispatcher import FSMContext
 
+from tg_bot.misc.scripts import parse_callback
 from tg_bot.models.db_model.models import Team
 
 # {
@@ -18,26 +19,28 @@ async def get_all(call: types.CallbackQuery, state: FSMContext):
     await call.answer(" ")
     await state.finish()
 
-    bot = call.bot
-    request_kb = bot.get("kb").get("request").get("team")
+    bot: Bot = call.bot
+    props: dict = await parse_callback("get_all", call.data)
+
+    requests_type: str = props.get("type")
+
+    request_kb = bot.get("kb").get("request").get(requests_type)
     db_model = bot.get("db_model")
 
-    team_requests: list = await db_model.get_team_requests()
+    requests: list = await db_model.get_team_requests()
 
-    requests: list = []
+    requests_data: list = []
 
-    for team_request in team_requests:
-        team: Team = await db_model.get_team(team_id=team_request.team_id)
-        requests.append({
-            "id": team_request.id,
-            "date": team_request.date_request,
-            "status": team_request.request_status,
-            "type": "team",
-            "item": {
-                "team_name": team.name
-            }
+    for request in requests:
+        item = requests_type == "team" if await db_model.get_team(team_id=request.team_id) else db_model.get_team(team_id=request.team_id)
+        requests_data.append({
+            "id": request.id,
+            "date": request.date_request,
+            "status": request.request_status,
+            "type": requests_type,
         })
-    ikb_view_all_requests: types.InlineKeyboardMarkup = await request_kb.get_all(requests=requests)
+
+    ikb_view_all_requests: types.InlineKeyboardMarkup = await request_kb.get_all(requests=requests_data)
 
     answer_text = "<b>Запросы</b>\n\n" + "Выберите запрос:"
 
@@ -59,4 +62,4 @@ async def get_by_status_choice_status(call: types.CallbackQuery, state: FSMConte
 
 
 def register_handlers_get(dp: Dispatcher):
-    dp.register_callback_query_handler(get_all, text_contains=["get_all?type"], is_admin=True)
+    dp.register_callback_query_handler(get_all, text_contains=["get_all"], is_admin=True)

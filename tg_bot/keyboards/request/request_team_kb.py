@@ -28,8 +28,9 @@ class RequestTeamKb(RequestKb):
 
     @staticmethod
     async def get_ib(text: str, method: str, request_type: str, request_id: str, status: str = None) -> InlineKeyboardButton:
-        callback_data: str = status if f"{method}?type={request_type}&status={status}&id={request_id}" else f"{method}?type={request_type}&id={request_id}"
+        callback_data: str = f"{method}?type={request_type}&status={status}&id={request_id}" if status else f"{method}?type={request_type}&id={request_id}"
 
+        print(callback_data)
         ib_moderation: InlineKeyboardButton = InlineKeyboardButton(text=text,
                                                                    callback_data=callback_data)
         return ib_moderation

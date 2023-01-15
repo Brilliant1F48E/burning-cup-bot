@@ -10,7 +10,7 @@ from .moderator import register_handlers_moderator
 
 def register_handlers_admin(dp: Dispatcher):
     register_handlers_start(dp)
-    register_handlers_tournament(dp)
     register_handlers_manager(dp)
+    register_handlers_tournament(dp)
     register_handlers_spam(dp)
     register_handlers_moderator(dp)

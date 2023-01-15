@@ -151,12 +151,12 @@ class DBInteraction(DBClient):
         self.session.add(request_member)
         self.session.commit()
 
-    async def set_request_member_comment(self, user_id: int, comment: str):
-        self.session.query(RequestMember).filter(RequestMember.user_id == user_id).update({'comment': comment})
+    async def set_request_member_comment(self, request_id: int, comment: str):
+        self.session.query(RequestMember).filter(RequestMember.request_id == request_id).update({'comment': comment})
         self.session.commit()
 
-    async def set_request_member_status(self, user_id: int, status: str):
-        self.session.query(RequestMember).filter(RequestMember.user_id == user_id).update(
+    async def set_request_member_status(self, request_id: int, status: str):
+        self.session.query(RequestMember).filter(RequestMember.id == request_id).update(
             {'request_member_status': status})
         self.session.commit()
 
@@ -184,8 +184,8 @@ class DBInteraction(DBClient):
     #
     #     self.session.commit()
 
-    async def get_request_member(self, user_id: int) -> RequestMember:
-        request_member = self.session.query(RequestMember).filter(RequestMember.user_id == user_id).order_by(
+    async def get_request_member(self, request_id: int) -> RequestMember:
+        request_member = self.session.query(RequestMember).filter(RequestMember.id == request_id).order_by(
             RequestMember.id.desc()).first()
 
         return request_member
@@ -265,6 +265,12 @@ class DBInteraction(DBClient):
         player = self.session.query(Player).filter(Player.username == username).first()
 
         return player
+
+    async def get_team_player(self, user_id: int) -> TeamPlayer:
+        player: Player = await self.get_player_by_user_id(user_id=user_id)
+        team_player: TeamPlayer = await self.get_team_player_by_player_id(player_id=player.id)
+
+        return team_player
 
     async def get_team_player_by_player_id(self, player_id: int) -> TeamPlayer:
         team_player = self.session.query(TeamPlayer).filter(TeamPlayer.player_id == player_id).order_by(
