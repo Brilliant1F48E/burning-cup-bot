@@ -41,7 +41,7 @@ class DBInteraction(DBClient):
 
         return request_team
 
-    async def set_request_team_status(self, request_team_id: int, request_status: str):
+    async def set_request_team_status(self, request_team_id: int, request_status: str) -> None:
         self.session.query(RequestTeam).filter(RequestTeam.id == request_team_id).update({
             "request_status": request_status
         })

@@ -88,7 +88,7 @@ async def moderation(call: types.CallbackQuery, state: FSMContext):
         await call.message.answer('Введите причину отказа')
         await state.set_state(VerifRequestTeam.ENTER_COMMENT_REQUEST_TEAM)
         async with state.proxy() as data:
-            data['request_team_id'] = request_team_id
+            data['request_id'] = request_id
 
 
 def register_handlers_moderation(dp: Dispatcher):
