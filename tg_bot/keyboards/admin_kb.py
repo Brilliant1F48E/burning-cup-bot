@@ -38,7 +38,7 @@ class AdminKb:
 
     ib_team_requests = InlineKeyboardButton("Запросы", callback_data="request_team")
 
-    ib_view_all_team_requests = InlineKeyboardButton("Все", callback_data="view_all_team_requests")
+    ib_view_all_team_requests = InlineKeyboardButton("Все", callback_data="get_all")
 
     # Registration Actions
     ib_set_registration = InlineKeyboardButton("Назначить", callback_data="set_registration")

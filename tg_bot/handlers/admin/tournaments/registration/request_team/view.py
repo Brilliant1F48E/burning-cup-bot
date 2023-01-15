@@ -17,7 +17,7 @@ async def view(call: types.CallbackQuery, state=FSMContext):
     request_kb: RequestTeamKb = bot.get("kb").get("request").get("team")
     db_model = bot.get("db_model")
 
-    props: dict = await parse_callback("view_team_request", call.data)
+    props: dict = await parse_callback("view", call.data)
 
     request_id = props.get("id")
     request_type = props.get("type")

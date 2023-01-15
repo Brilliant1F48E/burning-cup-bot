@@ -37,7 +37,7 @@ async def set_status(call: types.CallbackQuery, state: FSMContext):
     bot: Bot = call.bot
     db_model = bot.get("db_model")
 
-    props: dict = await parse_callback("choice_status", call.data)
+    props: dict = await parse_callback("set_status", call.data)
     request_type: str = props.get("request_type")
     request_id: str = props.get("request_id")
     request_status: str = props.get("request_status")

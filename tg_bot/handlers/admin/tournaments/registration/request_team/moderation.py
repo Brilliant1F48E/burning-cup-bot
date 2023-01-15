@@ -2,7 +2,6 @@ import datetime
 from aiogram import Dispatcher, types, Bot
 from aiogram.dispatcher import FSMContext
 
-from tg_bot import DBInteraction
 from tg_bot.misc.matches import add_matches, grouping
 from tg_bot.misc.scripts import notify_user, parse_callback, download_photo
 from tg_bot.models.db_model.models import TeamPlayer, RequestTeam, Team
@@ -92,4 +91,4 @@ async def moderation(call: types.CallbackQuery, state: FSMContext):
 
 
 def register_handlers_moderation(dp: Dispatcher):
-    dp.register_callback_query_handler(moderation, text=["moderation"], state="*", is_admin=True)
+    dp.register_callback_query_handler(moderation, text=["moderation?type"], state="*", is_admin=True)
