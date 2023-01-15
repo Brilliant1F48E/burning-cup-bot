@@ -58,5 +58,5 @@ async def get_by_status_choice_status(call: types.CallbackQuery, state: FSMConte
     await state.finish()
 
 
-def register_handlers_search(dp: Dispatcher):
+def register_handlers_get(dp: Dispatcher):
     dp.register_callback_query_handler(get_all, text_contains=["get_all"], is_admin=True)
