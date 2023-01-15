@@ -37,11 +37,11 @@ async def get_all(call: types.CallbackQuery, state: FSMContext):
                 "team_name": team.name
             }
         })
-    view_all_requests_ikb: types.InlineKeyboardMarkup = await request_kb.get_all(requests=requests)
+    ikb_view_all_requests: types.InlineKeyboardMarkup = await request_kb.get_all(requests=requests)
 
     answer_text = "<b>Запросы</b>\n\n" + "Выберите запрос:"
 
-    await call.message.answer(text=answer_text, reply_markup=view_all_requests_ikb)
+    await call.message.answer(text=answer_text, reply_markup=ikb_view_all_requests)
 
 
 async def get_by_status(call: types.CallbackQuery, state: FSMContext):
@@ -59,4 +59,4 @@ async def get_by_status_choice_status(call: types.CallbackQuery, state: FSMConte
 
 
 def register_handlers_search(dp: Dispatcher):
-    pass
+    dp.register_callback_query_handler(get_all, text_contains=["get_all"], is_admin=True)

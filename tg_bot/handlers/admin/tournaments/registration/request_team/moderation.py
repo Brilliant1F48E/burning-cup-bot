@@ -18,7 +18,8 @@ async def moderation(call: types.CallbackQuery, state: FSMContext):
     bot: Bot = call.bot
     props: dict = await parse_callback("moderation", call.data)
     request_type: str = props.get("type")
-    value: str = props.get("value")
+    request_id: str = props.get("id")
+    request_status: str = props.get("status")
 
     db_model: DBInteraction = bot.get("db_model")
     request_team_id = props.get("request_team_id")

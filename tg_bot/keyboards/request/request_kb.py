@@ -20,7 +20,7 @@ class RequestKb(ABC):
     __ib_confirm_set_no: InlineKeyboardButton
 
     @abstractmethod
-    async def get_all(self) -> InlineKeyboardMarkup:
+    async def get_all(self, requests) -> InlineKeyboardMarkup:
         pass
 
     @abstractmethod
