@@ -29,6 +29,7 @@ async def unban_team(call: types.CallbackQuery, state: FSMContext):
         await db_model.set_player_status(player_id=player.id, status=PlayerStatus.ACTIVE)
         await db_model.set_team_player_status(team_player_id=team_player.id, status=TeamPlayerStatus.ACTIVE)
         await db_model.set_member_status(member_id=member.id, status=MemberStatus.ACTIVE)
+
         text_response: str = "<b>Разбан</b>\n\n" \
                       "Вы были навсегда разбаннены😊.\n" \
                       "По причине:\n" \

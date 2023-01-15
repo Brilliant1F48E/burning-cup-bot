@@ -42,18 +42,18 @@ class RequestTeamKb(RequestKb):
                                                                      callback_data="confirm_set?type=team&value=no")
 
     async def get_moderation_ib(self, request_type: str, request_id: str,
-                                status: RequestStatus) -> InlineKeyboardButton:
+                                status: str) -> InlineKeyboardButton:
         ib_moderation: InlineKeyboardButton = InlineKeyboardButton(text="Да",
                                                                    callback_data=f"{self.__method_moderation}?type={request_type}&status={status}&request_id={request_id}")
         return ib_moderation
 
     async def get_set_status_ib(self, request_type: str, request_id: str,
-                                status: RequestStatus) -> InlineKeyboardButton:
+                                status: str) -> InlineKeyboardButton:
         ib_moderation: InlineKeyboardButton = InlineKeyboardButton(text="Да",
                                                                    callback_data=f"{self.__method_set_status}?type={request_type}&status={status}&request_id={request_id}")
         return ib_moderation
 
-    async def view(self, request_type: str, status: RequestStatus, request_id: str) -> InlineKeyboardMarkup:
+    async def view(self, request_type: str, status: str, request_id: str) -> InlineKeyboardMarkup:
         view_kb: InlineKeyboardMarkup = InlineKeyboardMarkup(row_width=3)
 
         if status == RequestStatus.PROCESS or status == RequestStatus.WAIT:
@@ -75,7 +75,7 @@ class RequestTeamKb(RequestKb):
 
         return view_kb
 
-    async def get_all(self) -> InlineKeyboardMarkup:
+    async def get_all(self, requests) -> InlineKeyboardMarkup:
         pass
 
     async def get_by(self) -> InlineKeyboardMarkup:
