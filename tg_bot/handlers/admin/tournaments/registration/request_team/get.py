@@ -32,7 +32,6 @@ async def get_all(call: types.CallbackQuery, state: FSMContext):
     requests_data: list = []
 
     for request in requests:
-        item = requests_type == "team" if await db_model.get_team(team_id=request.team_id) else db_model.get_team(team_id=request.team_id)
         requests_data.append({
             "id": request.id,
             "date": request.date_request,

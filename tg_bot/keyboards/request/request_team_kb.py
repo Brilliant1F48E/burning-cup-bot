@@ -27,9 +27,13 @@ class RequestTeamKb(RequestKb):
                                                                          callback_data="get_by?type=team&by=status&value=fail")
 
     @staticmethod
-    async def get_ib(text: str, method: str, request_type: str, request_id: str, status: str = None) -> InlineKeyboardButton:
-        callback_data: str = f"{method}?type={request_type}&status={status}&id={request_id}" if status else f"{method}?type={request_type}&id={request_id}"
+    async def get_ib(text: str, method: str, request_type: str, request_id: str = None, status: str = None) -> InlineKeyboardButton:
+        callback_data: str = f"{method}?type={request_type}"
 
+        if request_id:
+            callback_data += f"&id={request_id}"
+        if status:
+            callback_data += f"&status={status}"
         print(callback_data)
         ib_moderation: InlineKeyboardButton = InlineKeyboardButton(text=text,
                                                                    callback_data=callback_data)
@@ -112,6 +116,14 @@ class RequestTeamKb(RequestKb):
         ikb_get_by_status: InlineKeyboardMarkup = InlineKeyboardMarkup(row_width=1).add(*get_by_status_bs)
 
         return ikb_get_by_status
+
+    async def menu(self, request_type: str) -> InlineKeyboardMarkup:
+        ikb_menu: InlineKeyboardMarkup = InlineKeyboardMarkup(row_width=1)
+
+        ib_menu: InlineKeyboardButton = await self.get_ib(method=self.__method_get_all, request_type=request_type, text="Все")
+        ikb_menu.add(ib_menu)
+
+        return ikb_menu
 
     async def moderation(self) -> InlineKeyboardMarkup:
         pass
