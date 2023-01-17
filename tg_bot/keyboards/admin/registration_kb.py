@@ -9,7 +9,7 @@ class RegistrationKb:
     ib_registrations: InlineKeyboardButton = InlineKeyboardButton("Регистрации", callback_data="registrations")
 
     # Requests
-    ib_requests: InlineKeyboardButton = InlineKeyboardButton("Запросы", callback_data="request_team")
+    ib_requests: InlineKeyboardButton = InlineKeyboardButton("Запросы", callback_data="requests")
 
     ib_view_all_requests: InlineKeyboardButton = InlineKeyboardButton("Все", callback_data="view_all_requests")
     ib_view_selection_requests: InlineKeyboardButton = InlineKeyboardButton("Выборка", callback_data="view_selection_requests")

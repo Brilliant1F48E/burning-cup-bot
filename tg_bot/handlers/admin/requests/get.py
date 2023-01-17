@@ -2,7 +2,8 @@ from aiogram import Dispatcher, types, Bot
 from aiogram.dispatcher import FSMContext
 
 from tg_bot.misc.scripts import parse_callback
-from tg_bot.models.db_model.models import Team
+from tg_bot.models.db_model.models import Team, RequestMember
+
 
 # {
 #     "id": "id",
@@ -24,10 +25,10 @@ async def get_all(call: types.CallbackQuery, state: FSMContext):
 
     requests_type: str = props.get("type")
 
-    request_kb = bot.get("kb").get("request").get("team")
+    request_kb = bot.get("kb").get("request").get(requests_type)
     db_model = bot.get("db_model")
 
-    requests: list = await db_model.get_team_requests()
+    requests: list = await db_model.get_team_requests() if requests_type == "team" else await db_model.get_member_requests()
 
     requests_data: list = []
 
@@ -36,12 +37,16 @@ async def get_all(call: types.CallbackQuery, state: FSMContext):
             "id": request.id,
             "date": request.date_request,
             "status": request.request_status,
-            "type": requests_type,
         }
         if requests_type == "team":
             team: Team = await db_model.get_team(team_id=request.team_id)
             data["item"] = {
                 "team_name": team.name
+            }
+        elif requests_type == "member":
+            request_member: RequestMember = await db_model.get_request_member(request_id=request.id)
+            data["item"] = {
+                "fullname": request_member.last_name + request_member.first_name + request_member.patronymic
             }
         requests_data.append(data)
 

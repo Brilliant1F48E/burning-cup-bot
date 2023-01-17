@@ -1,1 +1,0 @@
-from .menu_requests import register_handlers_menu_requests

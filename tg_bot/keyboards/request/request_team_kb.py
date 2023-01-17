@@ -5,12 +5,7 @@ from tg_bot.types.request import RequestStatus
 
 
 class RequestTeamKb(RequestKb):
-    __method_get_all: str = "get_all"
-    __method_get_by: str = "get_by"
-    __method_set_status: str = "set_status"
-    __method_choice_status: str = "choice_status"
-    __method_moderation: str = "moderation"
-    __method_view: str = "view"
+    __request_type: str = "team"
 
     # Get
     __ib_get_all: InlineKeyboardButton = InlineKeyboardButton(text="Получить всё", callback_data="get_all?type=team")
@@ -26,34 +21,34 @@ class RequestTeamKb(RequestKb):
     __ib_get_by_status_fail: InlineKeyboardButton = InlineKeyboardButton(text="Провал",
                                                                          callback_data="get_by?type=team&by=status&value=fail")
 
-    @staticmethod
-    async def get_ib(text: str, method: str, request_type: str, request_id: str = None, status: str = None) -> InlineKeyboardButton:
-        callback_data: str = f"{method}?type={request_type}"
+    async def get_ib(self, text: str, method: str, request_id: str = None,
+                     status: str = None) -> InlineKeyboardButton:
+        callback_data: str = f"{method}?type={self.__request_type}"
 
         if request_id:
             callback_data += f"&id={request_id}"
         if status:
             callback_data += f"&status={status}"
-        print(callback_data)
-        ib_moderation: InlineKeyboardButton = InlineKeyboardButton(text=text,
-                                                                   callback_data=callback_data)
-        return ib_moderation
 
-    async def choice_status(self, request_type: str, request_id: str) -> InlineKeyboardMarkup:
+        ib: InlineKeyboardButton = InlineKeyboardButton(text=text, callback_data=callback_data)
+
+        return ib
+
+    async def choice_status(self, request_id: str) -> InlineKeyboardMarkup:
         choice_status_ikb: InlineKeyboardMarkup = InlineKeyboardMarkup(row_width=3)
 
         ib_set_status_fail: InlineKeyboardButton = await self.get_ib(
-            text=RequestStatus.FAIL, method=self.__method_set_status, request_type=request_type,
+            text=RequestStatus.FAIL, method=self.__method_set_status,
             request_id=request_id,
             status=RequestStatus.FAIL
         )
         ib_set_status_success: InlineKeyboardButton = await self.get_ib(
-            text=RequestStatus.SUCCESS, method=self.__method_set_status, request_type=request_type,
+            text=RequestStatus.SUCCESS, method=self.__method_set_status,
             request_id=request_id,
             status=RequestStatus.SUCCESS
         )
         ib_set_status_cancel: InlineKeyboardButton = await self.get_ib(
-            text=RequestStatus.CANCEL, method=self.__method_set_status, request_type=request_type,
+            text=RequestStatus.CANCEL, method=self.__method_set_status,
             request_id=request_id,
             status=RequestStatus.CANCEL
         )
@@ -61,30 +56,26 @@ class RequestTeamKb(RequestKb):
 
         return choice_status_ikb
 
-    async def view(self, request_type: str, request_status: str, request_id: str) -> InlineKeyboardMarkup:
+    async def view(self, request_status: str, request_id: str) -> InlineKeyboardMarkup:
         view_ikb: InlineKeyboardMarkup = InlineKeyboardMarkup(row_width=3)
 
         if request_status == RequestStatus.PROCESS or request_status == RequestStatus.WAIT:
             ib_moderation_yes: InlineKeyboardButton = await self.get_ib(text="Да",
                                                                         method=self.__method_moderation,
-                                                                        request_type=request_type,
                                                                         request_id=request_id,
                                                                         status=RequestStatus.SUCCESS)
             ib_moderation_no: InlineKeyboardButton = await self.get_ib(text="Нет",
                                                                        method=self.__method_moderation,
-                                                                       request_type=request_type,
                                                                        request_id=request_id,
                                                                        status=RequestStatus.FAIL)
             ib_moderation_postpone: InlineKeyboardButton = await self.get_ib(text="Отложить",
                                                                              method=self.__method_moderation,
-                                                                             request_type=request_type,
                                                                              request_id=request_id,
                                                                              status=RequestStatus.WAIT)
             view_ikb.add(ib_moderation_yes).add(ib_moderation_no).add(ib_moderation_postpone)
         else:
             ib_set_status: InlineKeyboardButton = await self.get_ib(text="Изменить статус",
                                                                     method=self.__method_choice_status,
-                                                                    request_type=request_type,
                                                                     request_id=request_id)
             view_ikb.add(ib_set_status)
 
@@ -97,7 +88,6 @@ class RequestTeamKb(RequestKb):
             request_text: str = f"{request.get('date')} {request.get('item').get('team_name')} {request.get('status')}"
             ib_request: InlineKeyboardButton = await self.get_ib(text=request_text,
                                                                  method=self.__method_view,
-                                                                 request_type=request.get('type'),
                                                                  request_id=request.get('id'),
                                                                  status=request.get('status'))
             ikb_all_requests.add(ib_request)
@@ -117,10 +107,11 @@ class RequestTeamKb(RequestKb):
 
         return ikb_get_by_status
 
-    async def get_menu(self, request_type: str) -> InlineKeyboardMarkup:
+    async def get_menu(self) -> InlineKeyboardMarkup:
         ikb_menu: InlineKeyboardMarkup = InlineKeyboardMarkup(row_width=1)
 
-        ib_menu: InlineKeyboardButton = await self.get_ib(method=self.__method_get_all, request_type=request_type, text="Все")
+        ib_menu: InlineKeyboardButton = await self.get_ib(method=self.__method_get_all,
+                                                          text="Все")
         ikb_menu.add(ib_menu)
 
         return ikb_menu

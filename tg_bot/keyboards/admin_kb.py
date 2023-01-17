@@ -17,7 +17,8 @@ class AdminKb:
     # Tournament
     ib_set_tournament = InlineKeyboardButton("Назначить", callback_data="set_tournament")
 
-    ib_menu_requests = InlineKeyboardButton("Запросы", callback_data="menu_requests")
+    ib_menu_requests: InlineKeyboardButton = InlineKeyboardButton("Запросы", callback_data="requests?type=member")
+
     # Days
     ib_days = InlineKeyboardButton("Дни", callback_data="days")
 
@@ -36,7 +37,7 @@ class AdminKb:
     # Registration
     ib_registration = InlineKeyboardButton("Регистрация", callback_data="registration")
 
-    ib_team_requests = InlineKeyboardButton("Запросы", callback_data="request_team")
+    ib_team_requests = InlineKeyboardButton("Запросы", callback_data="requests")
 
     ib_view_all_team_requests = InlineKeyboardButton("Все", callback_data="get_all")
 

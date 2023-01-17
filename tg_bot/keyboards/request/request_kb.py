@@ -6,18 +6,18 @@ from tg_bot.types.request import RequestStatus
 
 
 class RequestKb(ABC):
+    __method_get_all: str = "get_all"
+    __method_get_by: str = "get_by"
+    __method_set_status: str = "set_status"
+    __method_choice_status: str = "choice_status"
+    __method_moderation: str = "moderation"
+    __method_view: str = "view"
+
     __ib_get_by_status_wait: InlineKeyboardButton
     __ib_get_by_status_success: InlineKeyboardButton
     __ib_get_by_status_process: InlineKeyboardButton
     __ib_get_by_status_cancel: InlineKeyboardButton
     __ib_get_by_status_fail: InlineKeyboardButton
-
-    __ib_moderation: InlineKeyboardButton
-    __ib_no_moderation: InlineKeyboardButton
-    __ib_moderation_postpone: InlineKeyboardButton
-
-    __ib_confirm_set_yes: InlineKeyboardButton
-    __ib_confirm_set_no: InlineKeyboardButton
 
     @abstractmethod
     async def get_all(self, requests) -> InlineKeyboardMarkup:
@@ -28,7 +28,7 @@ class RequestKb(ABC):
         pass
 
     @abstractmethod
-    async def view(self, request_type: str, status: RequestStatus, request_id: str) -> InlineKeyboardMarkup:
+    async def view(self, status: RequestStatus, request_id: str) -> InlineKeyboardMarkup:
         pass
 
     @abstractmethod
@@ -37,4 +37,8 @@ class RequestKb(ABC):
 
     @abstractmethod
     async def set(self) -> InlineKeyboardMarkup:
+        pass
+
+    @abstractmethod
+    async def get_menu(self) -> InlineKeyboardMarkup:
         pass

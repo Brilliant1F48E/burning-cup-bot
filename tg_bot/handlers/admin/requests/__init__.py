@@ -8,7 +8,7 @@ from .set_status import register_handlers_set_status
 from .view import register_handlers_view
 
 
-def register_handlers_request_team(dp: Dispatcher):
+def register_handlers_requests(dp: Dispatcher):
     register_handlers_view(dp)
     register_handlers_enter_comment(dp)
     register_handlers_get(dp)

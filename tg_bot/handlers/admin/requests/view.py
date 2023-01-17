@@ -1,6 +1,6 @@
 import aiogram.utils.markdown as fmt
 
-from aiogram import Dispatcher, types
+from aiogram import Dispatcher, types, Bot
 from aiogram.dispatcher import FSMContext
 
 from tg_bot.keyboards import RequestTeamKb
@@ -14,17 +14,15 @@ async def view(call: types.CallbackQuery, state=FSMContext):
     await call.answer(" ")
     await state.finish()
 
-    bot = call.bot
-    request_kb: RequestTeamKb = bot.get("kb").get("request").get("team")
-    db_model = bot.get("db_model")
-
     props: dict = await parse_callback("view", call.data)
 
     request_id = props.get("id")
     request_type = props.get("type")
     request_status = props.get("status")
 
-    print(request_id)
+    bot: Bot = call.bot
+    request_kb: RequestTeamKb = bot.get("kb").get("request").get(request_type)
+    db_model = bot.get("db_model")
 
     if request_type == "team":
         request: RequestTeam = await db_model.get_request_team(request_team_id=request_id)
@@ -69,8 +67,7 @@ async def view(call: types.CallbackQuery, state=FSMContext):
         caption = request_title + request_fullname + request_institution + request_group
         photo_id: str = request_member.document_photo
 
-    ikb_view: types.InlineKeyboardMarkup = await request_kb.view(request_type=request_type,
-                                                                 request_id=request_id,
+    ikb_view: types.InlineKeyboardMarkup = await request_kb.view(request_id=request_id,
                                                                  request_status=request_status)
     await bot.send_photo(
         chat_id=call.from_user.id,

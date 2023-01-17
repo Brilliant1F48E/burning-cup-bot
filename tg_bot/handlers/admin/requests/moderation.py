@@ -2,8 +2,8 @@
 from aiogram import Dispatcher, types, Bot
 from aiogram.dispatcher import FSMContext
 
-from tg_bot.handlers.admin.tournaments.registration.request_team.add_tournament_team import add_tournament_team
-from tg_bot.handlers.admin.tournaments.registration.request_team.close_registration import close_registration
+from tg_bot.handlers.admin.requests.add_tournament_team import add_tournament_team
+from tg_bot.handlers.admin.requests.close_registration import close_registration
 
 from tg_bot.misc.scripts import notify_user, parse_callback
 from tg_bot.models.db_model.models import TeamPlayer, RequestTeam, Tournament, Registration

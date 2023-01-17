@@ -1,8 +1,8 @@
 from aiogram import Dispatcher, types, Bot
 from aiogram.dispatcher import FSMContext
 
-from tg_bot.handlers.admin.tournaments.registration.request_team.add_tournament_team import add_tournament_team
-from tg_bot.handlers.admin.tournaments.registration.request_team.close_registration import close_registration
+from tg_bot.handlers.admin.requests.add_tournament_team import add_tournament_team
+from tg_bot.handlers.admin.requests.close_registration import close_registration
 from tg_bot.keyboards import RequestTeamKb
 from tg_bot.misc.scripts import parse_callback
 from tg_bot.models.db_model.models import RequestTeam, TeamPlayer, Tournament, Registration
@@ -18,12 +18,9 @@ async def choice_status(call: types.CallbackQuery, state: FSMContext):
     request_type: str = props.get("type")
     request_id: str = props.get("id")
 
-    request_kb: RequestTeamKb = call.bot.get("kb").get("request").get("team")
+    request_kb: RequestTeamKb = call.bot.get("kb").get("request").get(request_type)
 
-    ikb_choice_status: types.InlineKeyboardMarkup = await request_kb.choice_status(
-        request_type=request_type,
-        request_id=request_id
-    )
+    ikb_choice_status: types.InlineKeyboardMarkup = await request_kb.choice_status(request_id=request_id)
 
     answer_text: str = "<b>Запрос</b>\n\nВыберите статус:"
 
