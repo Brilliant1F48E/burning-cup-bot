@@ -1,8 +1,13 @@
 from aiogram import Dispatcher, types, Bot
 from aiogram.dispatcher import FSMContext
 
+from tg_bot.handlers.admin.tournaments.registration.request_team.add_tournament_team import add_tournament_team
+from tg_bot.handlers.admin.tournaments.registration.request_team.close_registration import close_registration
 from tg_bot.keyboards import RequestTeamKb
 from tg_bot.misc.scripts import parse_callback
+from tg_bot.models.db_model.models import RequestTeam, TeamPlayer, Tournament, Registration
+from tg_bot.types.registration import RegistrationStatus
+from tg_bot.types.request import RequestStatus
 
 
 async def choice_status(call: types.CallbackQuery, state: FSMContext):
@@ -43,6 +48,22 @@ async def set_status(call: types.CallbackQuery, state: FSMContext):
     request_status: str = props.get("request_status")
 
     await db_model.set_request_team_status(request_team_id=request_id, request_status=request_status)
+
+    tournament: Tournament = await db_model.get_tournament()
+    registration: Registration = await db_model.get_registration(tournament_id=tournament.id)
+
+    if registration.registration_status == RegistrationStatus.CLOSE:
+        await call.message.answer('Регистрация закрыта!')
+        return
+
+    if request_status == RequestStatus.SUCCESS:
+        request_team: RequestTeam = await db_model.get_request_team(request_team_id=request_id)
+        captain: TeamPlayer = await db_model.get_captain_by_team_id(team_id=request_team.team_id)
+        await add_tournament_team(db_model=db_model, request_team=request_team, bot=bot, captain=captain)
+
+        tournament_teams = await db_model.get_tournament_teams()
+        if len(tournament_teams) == tournament.limit_teams:
+            await close_registration(db_model=db_model, bot=bot, registration=registration)
 
     answer_text: str = "<b>Статус запроса успешно изменён</b>"
 
