@@ -7,6 +7,13 @@ from tg_bot.types.request import RequestStatus
 class RequestMemberKb(RequestKb):
     __request_type: str = "member"
 
+    __method_get_all: str = "get_all"
+    __method_get_by: str = "get_by"
+    __method_set_status: str = "set_status"
+    __method_choice_status: str = "choice_status"
+    __method_moderation: str = "moderation"
+    __method_view: str = "view"
+
     # Get
     __ib_get_all: InlineKeyboardButton = InlineKeyboardButton(text="Получить всё", callback_data="get_all?type=team")
 
@@ -85,11 +92,12 @@ class RequestMemberKb(RequestKb):
         ikb_all_requests: InlineKeyboardMarkup = InlineKeyboardMarkup(row_width=1)
 
         for request in requests:
-            request_text: str = f"{request.get('date')} {request.get('item').get('fullname')} {request.get('status')}"
+            request_text: str = f"{request.get('date')} {request.get('status') if request.get('status') == 'WAIT' else ''}"
             ib_request: InlineKeyboardButton = await self.get_ib(text=request_text,
                                                                  method=self.__method_view,
                                                                  request_id=request.get('id'),
                                                                  status=request.get('status'))
+            print(request_text)
             ikb_all_requests.add(ib_request)
 
         return ikb_all_requests

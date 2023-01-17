@@ -7,6 +7,13 @@ from tg_bot.types.request import RequestStatus
 class RequestTeamKb(RequestKb):
     __request_type: str = "team"
 
+    __method_get_all: str = "get_all"
+    __method_get_by: str = "get_by"
+    __method_set_status: str = "set_status"
+    __method_choice_status: str = "choice_status"
+    __method_moderation: str = "moderation"
+    __method_view: str = "view"
+
     # Get
     __ib_get_all: InlineKeyboardButton = InlineKeyboardButton(text="Получить всё", callback_data="get_all?type=team")
 

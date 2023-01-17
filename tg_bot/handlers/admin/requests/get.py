@@ -36,7 +36,7 @@ async def get_all(call: types.CallbackQuery, state: FSMContext):
         data: dict = {
             "id": request.id,
             "date": request.date_request,
-            "status": request.request_status,
+            "status": request.request_status if requests_type == "team" else request.request_member_status,
         }
         if requests_type == "team":
             team: Team = await db_model.get_team(team_id=request.team_id)

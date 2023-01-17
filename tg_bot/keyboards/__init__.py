@@ -14,6 +14,7 @@ kb = {
     'team': TeamKb(),
     'moderator': ModeratorKb(),
     "request": {
-        "team": RequestTeamKb()
+        "team": RequestTeamKb(),
+        "member": RequestMemberKb(),
     }
 }

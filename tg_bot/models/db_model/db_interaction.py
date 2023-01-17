@@ -185,8 +185,7 @@ class DBInteraction(DBClient):
     #     self.session.commit()
 
     async def get_request_member(self, request_id: int) -> RequestMember:
-        request_member = self.session.query(RequestMember).filter(RequestMember.id == request_id).order_by(
-            RequestMember.id.desc()).first()
+        request_member = self.session.query(RequestMember).filter(RequestMember.id == request_id).first()
 
         return request_member
 
