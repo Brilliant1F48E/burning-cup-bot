@@ -24,6 +24,8 @@ async def view(call: types.CallbackQuery, state=FSMContext):
     request_type = props.get("type")
     request_status = props.get("status")
 
+    print(request_id)
+
     if request_type == "team":
         request: RequestTeam = await db_model.get_request_team(request_team_id=request_id)
         team: Team = await db_model.get_team(team_id=request.team_id)

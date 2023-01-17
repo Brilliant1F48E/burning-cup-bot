@@ -15,8 +15,8 @@ async def choice_status(call: types.CallbackQuery, state: FSMContext):
     await state.finish()
 
     props: dict = await parse_callback("choice_status", call.data)
-    request_type: str = props.get("request_type")
-    request_id: str = props.get("request_id")
+    request_type: str = props.get("type")
+    request_id: str = props.get("id")
 
     request_kb: RequestTeamKb = call.bot.get("kb").get("request").get("team")
 
@@ -43,12 +43,11 @@ async def set_status(call: types.CallbackQuery, state: FSMContext):
     db_model = bot.get("db_model")
 
     props: dict = await parse_callback("set_status", call.data)
-    request_type: str = props.get("request_type")
-    request_id: str = props.get("request_id")
-    request_status: str = props.get("request_status")
+    request_type: str = props.get("type")
+    request_id: str = props.get("id")
+    request_status: str = props.get("status")
 
-    await db_model.set_request_team_status(request_team_id=request_id, request_status=request_status)
-
+    print(request_id)
     tournament: Tournament = await db_model.get_tournament()
     registration: Registration = await db_model.get_registration(tournament_id=tournament.id)
 
@@ -66,6 +65,9 @@ async def set_status(call: types.CallbackQuery, state: FSMContext):
             await close_registration(db_model=db_model, bot=bot, registration=registration)
 
     answer_text: str = "<b>Статус запроса успешно изменён</b>"
+    print(request_status)
+    print(request_id)
+    await db_model.set_request_team_status(request_team_id=request_id, request_status=request_status)
 
     await call.message.answer(answer_text)
 

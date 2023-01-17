@@ -46,7 +46,7 @@ async def download_photo(bot: Bot, file_id: str, name: str) -> str:
     photo_file: File = await bot.get_file(file_id)
     file_ext: str = photo_file.file_path.split(".")[-1]
     photo_name: str = name + "." + file_ext
-    images_path = bot.get("config").get("path").get("images")
+    images_path = bot.get("config").path.images
     path: str = os.path.join(images_path, photo_name)
 
     await bot.download_file(file_path=photo_file.file_path, destination=path)
