@@ -45,9 +45,9 @@ async def team_composition(call: types.CallbackQuery, state: FSMContext):
             })
 
     team_composition_ikb = await team_kb.get_team_composition_ikb(players=players,
-                                                                         captain=captain,
-                                                                         is_captain=team_player.is_captain,
-                                                                         is_request_team=is_request_team)
+                                                                  captain=captain,
+                                                                  is_captain=team_player.is_captain,
+                                                                  is_request_team=is_request_team)
 
     await call.bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                              reply_markup=team_composition_ikb)
@@ -92,9 +92,9 @@ async def team_composition_captain(call: types.CallbackQuery, state: FSMContext)
             })
 
     team_composition_ikb = await team_kb.get_team_composition_ikb(players=players,
-                                                                         captain=captain,
-                                                                         is_captain=current_team_player.is_captain,
-                                                                         is_request_team=is_request_team)
+                                                                  captain=captain,
+                                                                  is_captain=current_team_player.is_captain,
+                                                                  is_request_team=is_request_team)
 
     await call.bot.edit_message_reply_markup(chat_id=call.message.chat.id, message_id=call.message.message_id,
                                              reply_markup=team_composition_ikb)
