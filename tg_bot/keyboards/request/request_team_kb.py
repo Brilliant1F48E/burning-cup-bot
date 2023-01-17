@@ -117,7 +117,7 @@ class RequestTeamKb(RequestKb):
 
         return ikb_get_by_status
 
-    async def menu(self, request_type: str) -> InlineKeyboardMarkup:
+    async def get_menu(self, request_type: str) -> InlineKeyboardMarkup:
         ikb_menu: InlineKeyboardMarkup = InlineKeyboardMarkup(row_width=1)
 
         ib_menu: InlineKeyboardButton = await self.get_ib(method=self.__method_get_all, request_type=request_type, text="Все")

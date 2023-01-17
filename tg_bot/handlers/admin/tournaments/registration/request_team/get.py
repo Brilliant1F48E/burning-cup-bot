@@ -24,7 +24,7 @@ async def get_all(call: types.CallbackQuery, state: FSMContext):
 
     requests_type: str = props.get("type")
 
-    request_kb = bot.get("kb").get("request").get(requests_type)
+    request_kb = bot.get("kb").get("request").get("team")
     db_model = bot.get("db_model")
 
     requests: list = await db_model.get_team_requests()
@@ -32,12 +32,18 @@ async def get_all(call: types.CallbackQuery, state: FSMContext):
     requests_data: list = []
 
     for request in requests:
-        requests_data.append({
+        data: dict = {
             "id": request.id,
             "date": request.date_request,
             "status": request.request_status,
             "type": requests_type,
-        })
+        }
+        if requests_type == "team":
+            team: Team = await db_model.get_team(team_id=request.team_id)
+            data["item"] = {
+                "team_name": team.name
+            }
+        requests_data.append(data)
 
     ikb_view_all_requests: types.InlineKeyboardMarkup = await request_kb.get_all(requests=requests_data)
 
