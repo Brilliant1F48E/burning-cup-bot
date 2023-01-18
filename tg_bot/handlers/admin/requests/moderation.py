@@ -13,7 +13,6 @@ from tg_bot.types.request.states import ModerationRequestEnterComment
 
 
 async def moderation(call: types.CallbackQuery, state: FSMContext):
-    await call.message.delete()
     await call.answer(" ")
     await state.finish()
 
@@ -22,6 +21,10 @@ async def moderation(call: types.CallbackQuery, state: FSMContext):
     request_type: str = props.get("type")
     request_id: str = props.get("id")
     request_status: str = props.get("status")
+
+    print(f"Код запроса {request_id}")
+    print(f"Тип запроса {request_type}")
+    print(f"Статус запроса {request_status}")
 
     db_model = bot.get("db_model")
 

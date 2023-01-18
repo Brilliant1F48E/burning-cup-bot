@@ -76,7 +76,7 @@ async def cmd_start_user(msg: types.Message, state=FSMContext):
         await state.set_state(CreateRequestMember.CHOICE_MEMBER_TYPE)
         return
 
-    request_member = await db_model.get_request_member(user_id=user_id)
+    request_member = await db_model.get_request_member_by_user_id(user_id=user_id)
 
     if request_member.request_member_status == RequestStatus.FAIL:
         repeated_request_member_ikb = await register_kb.get_repeated_request_member_ikb()

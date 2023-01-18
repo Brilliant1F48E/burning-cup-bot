@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 
 from tg_bot.misc.scripts import parse_callback
 from tg_bot.models.db_model.models import Team, RequestMember
+from tg_bot.types.request import RequestStatus
 
 
 # {
@@ -28,7 +29,7 @@ async def get_all(call: types.CallbackQuery, state: FSMContext):
     request_kb = bot.get("kb").get("request").get(requests_type)
     db_model = bot.get("db_model")
 
-    requests: list = await db_model.get_team_requests() if requests_type == "team" else await db_model.get_member_requests()
+    requests: list = await db_model.get_team_requests() if requests_type == "team" else await db_model.get_requests_member_by_status(status=RequestStatus.WAIT)
 
     requests_data: list = []
 

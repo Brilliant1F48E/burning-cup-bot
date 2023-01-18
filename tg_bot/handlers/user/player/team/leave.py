@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 
 from tg_bot.misc.phares import Phrases
 from tg_bot.misc.scripts import check_rule_team_player
+from tg_bot.models.db_model.models import TeamPlayer
 from tg_bot.types.request import RequestStatus
 from tg_bot.types.team_player import TeamPlayerStatus
 
@@ -16,8 +17,10 @@ async def leave_the_team(call: types.CallbackQuery, state=FSMContext):
     confirm_leave_the_team_ikb = await team_kb.get_confirm_leave_the_team_ikb()
     db_model = call.bot.get('db_model')
 
-    team_player = await db_model.get_team_player(user_id=call.from_user.id)
-
+    team_player: TeamPlayer = await db_model.get_team_player(user_id=call.from_user.id)
+    print(team_player)
+    print(team_player.team_player_status)
+    
     if not await check_rule_team_player(call=call):
         return
 
@@ -41,7 +44,7 @@ async def confirm_leave_the_team(call: types.CallbackQuery, state=FSMContext):
     user_id = call.from_user.id
     db_model = call.bot.get('db_model')
 
-    team_player = await db_model.get_team_player(user_id=user_id)
+    team_player: TeamPlayer = await db_model.get_team_player(user_id=user_id)
     await db_model.set_team_player_status(team_player_id=team_player.id, status=TeamPlayerStatus.LEAVE)
 
     await db_model.set_team_player_is_ready(team_player_id=team_player.id, is_ready=False)

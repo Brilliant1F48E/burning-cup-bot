@@ -185,9 +185,19 @@ class DBInteraction(DBClient):
     #     self.session.commit()
 
     async def get_request_member(self, request_id: int) -> RequestMember:
-        request_member = self.session.query(RequestMember).filter(RequestMember.id == request_id).first()
+        request_member: RequestMember = self.session.query(RequestMember).filter(RequestMember.id == request_id).first()
 
         return request_member
+
+    async def get_request_member_by_user_id(self, user_id: int) -> RequestMember:
+        request_member: RequestMember = self.session.query(RequestMember).filter(RequestMember.user_id == user_id).first()
+
+        return request_member
+
+    async def get_requests_member_by_status(self, status: RequestStatus) -> list:
+        requests_member: list = self.session.query(RequestMember).filter(RequestMember.request_member_status == status).all()
+
+        return requests_member
 
     async def is_member(self, user_id: int) -> bool:
         user = await self.is_user(user_id=user_id)
