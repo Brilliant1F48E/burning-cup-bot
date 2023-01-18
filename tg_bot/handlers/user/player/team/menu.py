@@ -58,18 +58,6 @@ async def menu_team(call: types.CallbackQuery, state=FSMContext):
     await call.message.answer(answer_text, reply_markup=team_ikb)
 
     await state.finish()
-    await call.answer(' ')
-
-    user_id = call.from_user.id
-    db_model = call.bot.get('db_model')
-
-    team_player = await db_model.get_team_player(user_id=user_id)
-    await db_model.set_team_player_status(team_player_id=team_player.id, status=TeamPlayerStatus.LEAVE)
-
-    await db_model.set_team_player_is_ready(team_player_id=team_player.id, is_ready=False)
-
-    answer_text = Phrases.success_leave_from_team
-    await call.message.answer(answer_text)
 
 
 def register_handlers_menu(dp: Dispatcher):

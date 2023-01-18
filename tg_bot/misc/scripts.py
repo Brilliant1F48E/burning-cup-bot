@@ -15,7 +15,7 @@ async def check_rule_team_player(call: types.CallbackQuery):
 
     if await db_model.is_team_player(user_id=user_id):
         team_player = await db_model.get_team_player_by_user_id(user_id=user_id)
-
+        print(f"Статус командного игрока: {team_player.team_player_status}")
         team_ikb = await team_kb.get_team_ikb(team_exist=False)
 
         if team_player.team_player_status == TeamPlayerStatus.DISBANDED:
@@ -36,7 +36,7 @@ async def check_rule_team_player(call: types.CallbackQuery):
         elif team_player.team_player_status == TeamPlayerStatus.LEAVE:
             answer_text = Phrases.menu_team + Phrases.leave_from_team
 
-            await call.message.answer(answer_text)
+            await call.message.answer(answer_text, reply_markup=team_ikb)
             return
 
     return True

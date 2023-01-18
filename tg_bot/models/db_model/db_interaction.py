@@ -277,12 +277,12 @@ class DBInteraction(DBClient):
 
     async def get_team_player(self, user_id: int) -> TeamPlayer:
         player: Player = await self.get_player_by_user_id(user_id=user_id)
-        team_player: TeamPlayer = await self.get_team_player_by_player_id(player_id=player.id)
 
+        team_player: TeamPlayer = await self.get_team_player_by_player_id(player_id=player.id)
         return team_player
 
     async def get_team_player_by_player_id(self, player_id: int) -> TeamPlayer:
-        team_player = self.session.query(TeamPlayer).filter(TeamPlayer.player_id == player_id).order_by(
+        team_player: TeamPlayer = self.session.query(TeamPlayer).filter(TeamPlayer.player_id == player_id).order_by(
             TeamPlayer.id.desc()).first()
 
         return team_player
@@ -305,7 +305,7 @@ class DBInteraction(DBClient):
     async def get_player_by_user_id(self, user_id: int) -> Player:
         member = await self.get_member_by_user_id(user_id=user_id)
 
-        player = self.session.query(Player).filter(Player.member_id == member.id).first()
+        player: Player = self.session.query(Player).filter(Player.member_id == member.id).first()
 
         return player
 

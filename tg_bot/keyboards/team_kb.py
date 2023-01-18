@@ -128,7 +128,7 @@ class TeamKb(BaseKb):
         confirm_leave_the_team = InlineKeyboardMarkup(row_width=2)
 
         ib_yes_confirm_leave_the_team = InlineKeyboardButton('Да',
-                                                             callback_data=f'confirm_leave_the_team')
+                                                             callback_data=f'confirm_leave_from_team')
         ib_no_confirm_leave_the_team = InlineKeyboardButton('Нет', callback_data=f'back_to_team')
 
         confirm_leave_the_team.add(ib_yes_confirm_leave_the_team).insert(ib_no_confirm_leave_the_team)

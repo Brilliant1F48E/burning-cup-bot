@@ -22,10 +22,6 @@ async def moderation(call: types.CallbackQuery, state: FSMContext):
     request_id: str = props.get("id")
     request_status: str = props.get("status")
 
-    print(f"Код запроса {request_id}")
-    print(f"Тип запроса {request_type}")
-    print(f"Статус запроса {request_status}")
-
     db_model = bot.get("db_model")
 
     tournament: Tournament = await db_model.get_tournament()

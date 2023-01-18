@@ -10,7 +10,7 @@ from tg_bot.types.team_player import TeamPlayerStatus
 
 async def leave_the_team(call: types.CallbackQuery, state=FSMContext):
     await state.finish()
-    await call.answer(' ')
+    await call.answer(" ")
 
     team_kb = call.bot.get('kb').get('team')
 
@@ -18,9 +18,7 @@ async def leave_the_team(call: types.CallbackQuery, state=FSMContext):
     db_model = call.bot.get('db_model')
 
     team_player: TeamPlayer = await db_model.get_team_player(user_id=call.from_user.id)
-    print(team_player)
-    print(team_player.team_player_status)
-    
+
     if not await check_rule_team_player(call=call):
         return
 
@@ -39,12 +37,13 @@ async def leave_the_team(call: types.CallbackQuery, state=FSMContext):
 
 async def confirm_leave_the_team(call: types.CallbackQuery, state=FSMContext):
     await state.finish()
-    await call.answer(' ')
+    await call.answer(" ")
 
     user_id = call.from_user.id
     db_model = call.bot.get('db_model')
 
     team_player: TeamPlayer = await db_model.get_team_player(user_id=user_id)
+
     await db_model.set_team_player_status(team_player_id=team_player.id, status=TeamPlayerStatus.LEAVE)
 
     await db_model.set_team_player_is_ready(team_player_id=team_player.id, is_ready=False)
@@ -54,7 +53,7 @@ async def confirm_leave_the_team(call: types.CallbackQuery, state=FSMContext):
 
 
 def register_handlers_leave(dp: Dispatcher):
-    dp.register_callback_query_handler(confirm_leave_the_team, text_contains=['confirm_leave_the_team'], state='*',
+    dp.register_callback_query_handler(confirm_leave_the_team, text_contains=['confirm_leave_from_team'], state='*',
                                        is_team_player=True)
-    dp.register_callback_query_handler(leave_the_team, text_contains=['leave_the_team'], state='*',
+    dp.register_callback_query_handler(leave_the_team, text_contains=['leave_from_team'], state='*',
                                        is_team_player=True)
