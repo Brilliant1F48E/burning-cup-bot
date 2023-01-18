@@ -21,6 +21,7 @@ def register_handlers_team(dp: Dispatcher):
     register_handlers_invite_code(dp)
     register_handlers_kick(dp)
     register_handlers_menu(dp)
+    register_handlers_participate(dp)
     register_handlers_set_team_name(dp)
     register_handlers_set_team_photo(dp)
     register_handlers_create_team(dp)

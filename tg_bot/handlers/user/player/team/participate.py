@@ -11,9 +11,8 @@ from tg_bot.types.moderator import ModeratorRule
 
 
 async def participate(call: types.CallbackQuery, state=FSMContext):
-    await call.answer(' ')
+    await call.answer(" ")
     await state.finish()
-    await call.message.delete()
 
     user_id = call.from_user.id
     db_model = call.bot.get("db_model")
