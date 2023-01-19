@@ -55,6 +55,7 @@ async def set_status(call: types.CallbackQuery, state: FSMContext):
     if request_status == RequestStatus.SUCCESS:
         request_team: RequestTeam = await db_model.get_request_team(request_team_id=request_id)
         captain: TeamPlayer = await db_model.get_captain_by_team_id(team_id=request_team.team_id)
+
         await add_tournament_team(db_model=db_model, request_team=request_team, bot=bot, captain=captain)
 
         tournament_teams = await db_model.get_tournament_teams()
@@ -62,8 +63,7 @@ async def set_status(call: types.CallbackQuery, state: FSMContext):
             await close_registration(db_model=db_model, bot=bot, registration=registration)
 
     answer_text: str = "<b>Статус запроса успешно изменён</b>"
-    print(request_status)
-    print(request_id)
+
     await db_model.set_request_team_status(request_team_id=request_id, request_status=request_status)
 
     await call.message.answer(answer_text)

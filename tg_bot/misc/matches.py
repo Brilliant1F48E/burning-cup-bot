@@ -23,9 +23,9 @@ async def add_matches(db_model):
     await db_model.add_match(number_match=3, next_number_match=10, stage=Stage.QUARTERFINAL, group='A', match_status=MatchStatus.TEAM_COMPLETE, first_tournament_team_id=5, second_tournament_team_id=6)
     await db_model.add_match(number_match=4, next_number_match=10, stage=Stage.QUARTERFINAL, group='A', match_status=MatchStatus.TEAM_COMPLETE, first_tournament_team_id=7, second_tournament_team_id=8)
     await db_model.add_match(number_match=5, next_number_match=11, stage=Stage.QUARTERFINAL, group='B', match_status=MatchStatus.TEAM_COMPLETE, first_tournament_team_id=9, second_tournament_team_id=10)
-    await db_model.add_match(number_match=6, next_number_match=11, stage=Stage.QUARTERFINAL, group='B', match_status=MatchStatus.TEAM_COMPLETE, first_tournament_team_id=11, second_tournament_team_id=12)
-    await db_model.add_match(number_match=7, next_number_match=12, stage=Stage.QUARTERFINAL, group='B', match_status=MatchStatus.TEAM_COMPLETE, first_tournament_team_id=13, second_tournament_team_id=14)
-    await db_model.add_match(number_match=8, next_number_match=12, stage=Stage.QUARTERFINAL, group='B', match_status=MatchStatus.TEAM_COMPLETE, first_tournament_team_id=15, second_tournament_team_id=16)
+    await db_model.add_match(number_match=6, next_number_match=11, stage=Stage.QUARTERFINAL, group='B', match_status=MatchStatus.TEAM_COMPLETE, first_tournament_team_id=14, second_tournament_team_id=15)
+    await db_model.add_match(number_match=7, next_number_match=12, stage=Stage.QUARTERFINAL, group='B', match_status=MatchStatus.TEAM_COMPLETE, first_tournament_team_id=16, second_tournament_team_id=17)
+    await db_model.add_match(number_match=8, next_number_match=12, stage=Stage.QUARTERFINAL, group='B', match_status=MatchStatus.TEAM_COMPLETE, first_tournament_team_id=18, second_tournament_team_id=19)
 
     await db_model.add_match(number_match=9, next_number_match=13, stage=Stage.SEMIFINAL, group='A')
     await db_model.add_match(number_match=10, next_number_match=13, stage=Stage.SEMIFINAL, group='A')

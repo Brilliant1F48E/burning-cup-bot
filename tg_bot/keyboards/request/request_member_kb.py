@@ -15,7 +15,7 @@ class RequestMemberKb(RequestKb):
     __method_view: str = "view"
 
     # Get
-    __ib_get_all: InlineKeyboardButton = InlineKeyboardButton(text="Получить всё", callback_data="get_all?type=team")
+    __ib_get_all: InlineKeyboardButton = InlineKeyboardButton(text="Получить всё", callback_data="get_all?type=member")
 
     __ib_get_by_status_wait: InlineKeyboardButton = InlineKeyboardButton(text="В ожидании",
                                                                          callback_data="get_by?type=team&by=status&value=wait")
@@ -97,7 +97,6 @@ class RequestMemberKb(RequestKb):
                                                                  method=self.__method_view,
                                                                  request_id=request.get('id'),
                                                                  status=request.get('status'))
-            print(request_text)
             ikb_all_requests.add(ib_request)
 
         return ikb_all_requests

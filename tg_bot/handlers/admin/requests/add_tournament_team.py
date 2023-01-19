@@ -1,5 +1,5 @@
 from tg_bot.misc.scripts import download_photo
-from tg_bot.models.db_model.models import TeamPlayer, RequestTeam, Team
+from tg_bot.models.db_model.models import TeamPlayer, RequestTeam, Team, Player
 from aiogram import Bot
 
 
@@ -14,7 +14,7 @@ async def add_tournament_team(db_model, request_team: RequestTeam, bot: Bot, cap
     await db_model.set_team_photo(team_id=team.id, photo=photo_name)
 
     await db_model.add_tournament_team(
-        captain_id=captain.id,
+        captain_id=captain.player_id,
         players=team_players,
         name=team.name,
         photo=photo_name,

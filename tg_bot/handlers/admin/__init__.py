@@ -9,7 +9,7 @@ from .manager import register_handlers_manager
 
 def register_handlers_admin(dp: Dispatcher):
     register_handlers_start(dp)
+    register_handlers_manager(dp) 
     register_handlers_requests(dp)
-    register_handlers_manager(dp)
     register_handlers_tournament(dp)
     register_handlers_spam(dp)

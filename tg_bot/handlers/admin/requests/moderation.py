@@ -6,7 +6,7 @@ from tg_bot.handlers.admin.requests.add_tournament_team import add_tournament_te
 from tg_bot.handlers.admin.requests.close_registration import close_registration
 
 from tg_bot.misc.scripts import notify_user, parse_callback
-from tg_bot.models.db_model.models import TeamPlayer, RequestTeam, Tournament, Registration
+from tg_bot.models.db_model.models import TeamPlayer, RequestTeam, Tournament, Registration, Player, Member
 from tg_bot.types.registration import RegistrationStatus
 from tg_bot.types.request import RequestStatus
 from tg_bot.types.request.states import ModerationRequestEnterComment
@@ -36,13 +36,12 @@ async def moderation(call: types.CallbackQuery, state: FSMContext):
             if registration.registration_status == RegistrationStatus.OPEN:
                 request_team: RequestTeam = await db_model.get_request_team(request_team_id=request_id)
                 await db_model.set_request_team_status(request_team_id=request_id, request_status=RequestStatus.SUCCESS)
-
                 captain: TeamPlayer = await db_model.get_captain_by_team_id(team_id=request_team.team_id)
 
                 await add_tournament_team(db_model=db_model, request_team=request_team, bot=bot, captain=captain)
 
-                player_captain = await db_model.get_player(player_id=captain.player_id)
-                member_captain = await db_model.get_member(member_id=player_captain.member_id)
+                player_captain: Player = await db_model.get_player(player_id=captain.player_id)
+                member_captain: Member = await db_model.get_member(member_id=player_captain.member_id)
 
                 await notify_user(
                     text='✅ Ваша команда приняла участие в турнире <b>🔥 Burning Cup</b>',

@@ -6,6 +6,8 @@ from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from tg_bot.keyboards import kb
+from tg_bot.misc.matches import add_matches
+from tg_bot.misc.scripts import notify_user
 from tg_bot.types.institution import InstitutionType
 from tg_bot.types.moderator import ModeratorRule
 from tg_bot.misc.phares import Phrases

@@ -25,7 +25,7 @@ async def get_all(call: types.CallbackQuery, state: FSMContext):
     props: dict = await parse_callback("get_all", call.data)
 
     requests_type: str = props.get("type")
-
+    print(requests_type)
     request_kb = bot.get("kb").get("request").get(requests_type)
     db_model = bot.get("db_model")
 

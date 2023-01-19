@@ -37,7 +37,7 @@ class AdminKb:
     # Registration
     ib_registration = InlineKeyboardButton("Регистрация", callback_data="registration")
 
-    ib_team_requests = InlineKeyboardButton("Запросы", callback_data="requests")
+    ib_team_requests = InlineKeyboardButton("Запросы", callback_data="requests?type=team")
 
     ib_view_all_team_requests = InlineKeyboardButton("Все", callback_data="get_all")
 
